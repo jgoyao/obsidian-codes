@@ -3,39 +3,28 @@ This section has dataviewjs scripts chunks for different interesting options
 
 ## Filter all completed task (including nested tasks)
 
-
+```
 ```dataviewjs
 function filterIncompleteTasks(task) {
     if (!task || task.completed) {
-	    return null;
+        return null;
     }
-	
-    // Filtra subtareas de manera recursiva
-	let filteredSubtasks = [];
-	if (task.children) {
-	    for (let i = 0; i < task.children.length; i++) {
-	        let subtask = filterIncompleteTasks(task.children[i]);
-	        if (subtask !== null) {
-	            filteredSubtasks.push(subtask);
-	        }
-	    }
-	    task.children = filteredSubtasks
-	}
+
+    // Filter subtasks recursively using .map
+    if (task.children) {
+        task.children = task.children
+            .map(filterIncompleteTasks)
+            .filter(subtask => subtask !== null);
+    }
     return task;
 }
 
-// Filtra todas las tareas principales e itera sobre cada una
-let filteredTasks = [];
+// Filter all main tasks and iterate over each one using .map
 let tasks = dv.pages().file.tasks;
+let filteredTasks = tasks
+    .map(filterIncompleteTasks)
+    .filter(task => task !== null);
 
-for (let i = 0; i < tasks.length; i++) {
-    let task = filterIncompleteTasks(tasks[i]);
-    if (task !== null) {
-        filteredTasks.push(task);
-    }
-}
-
-
-// Muestra solo las tareas que siguen incompletas
+// Display only the tasks that are still incomplete
 dv.taskList(filteredTasks, true);
 ```
