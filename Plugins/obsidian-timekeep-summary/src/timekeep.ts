@@ -786,15 +786,15 @@ export async function loadSummary(source: string, app: App, folderPath: string):
                 let _duration = getEntryDuration(_s1, null);
                 
                 if (_duration > 0) {
-                    if (!_arr_entries_resume[_e.name]) {
-                        _arr_entries_resume[_e.name] = {};
+                    if (!_arr_entries_resume[_fileMonth[blockNum]]) {
+                        _arr_entries_resume[_fileMonth[blockNum]] = {};
                     }
-                    if (!_arr_entries_resume[_e.name][_s1.name]) {
-                        _arr_entries_resume[_e.name][_s1.name] = {};
+                    if (!_arr_entries_resume[_fileMonth[blockNum]][_e.name]) {
+                        _arr_entries_resume[_fileMonth[blockNum]][_e.name]= {};
                     }
-					if (!_arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]]) {
+					if (!_arr_entries_resume[_fileMonth[blockNum]][_e.name][_s1.name]) {
 						//console.log(_arr_entries_resume)
-                        _arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]] = {};
+                        _arr_entries_resume[_fileMonth[blockNum]][_e.name][_s1.name]= {};
                     }
                     
                     for (const _s2 of _s1.subEntries) {
@@ -805,10 +805,10 @@ export async function loadSummary(source: string, app: App, folderPath: string):
                     }
 					
                     
-                    if (!_arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]][_weekNum]) {
-                        _arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]][_weekNum] = 0;
+                    if (!_arr_entries_resume[_fileMonth[blockNum]][_e.name][_s1.name][_weekNum]) {
+                        _arr_entries_resume[_fileMonth[blockNum]][_e.name][_s1.name][_weekNum] = 0;
                     }
-                    _arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]][_weekNum] += _duration/3600000;
+                    _arr_entries_resume[_fileMonth[blockNum]][_e.name][_s1.name][_weekNum] += _duration/3600000;
                 }
             }
         }

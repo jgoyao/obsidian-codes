@@ -69,7 +69,7 @@ export default function App({
 }
 
 // Accordion item component
-function AccordionItem({ title, content, level, addTotal }) {
+function AccordionItem({ title, content, level, addTotal, addKeySum }) {
     const [isOpen, setIsOpen] = useState(true);
 
     const toggleAccordion = () => {
@@ -84,7 +84,10 @@ function AccordionItem({ title, content, level, addTotal }) {
 
     useEffect(() => {
         addTotal(total);
-    }, [total, addTotal]);
+        if (level === 0) {
+            addKeySum(title, total);
+        }
+    }, [total, addTotal, addKeySum, title, level]);
 
     return (
         <div>
@@ -94,7 +97,7 @@ function AccordionItem({ title, content, level, addTotal }) {
             {isOpen && (
                 <div style={{ paddingLeft: '20px' }}>
                     {typeof content === 'object' && level < 2 ? (
-                        <NestedAccordion data={content} level={level + 1} addTotal={addTotal} />
+                        <NestedAccordion data={content} level={level + 1} addTotal={addTotal} addKeySum={addKeySum} />
                     ) : (
                         <table>
                             <tbody>
@@ -118,11 +121,31 @@ function AccordionItem({ title, content, level, addTotal }) {
 }
 
 // Recursive component to display nested data in accordion
-function NestedAccordion({ data, level, addTotal }) {
+function NestedAccordion({ data, level, addTotal, addKeySum }) {
+    const calculateNestedTotal = (data) => {
+        return Object.values(data).reduce((sum, value) => {
+            if (typeof value === 'number') {
+                return sum + value;
+            } else if (typeof value === 'object') {
+                return sum + calculateNestedTotal(value);
+            }
+            return sum;
+        }, 0);
+    };
+
+    useEffect(() => {
+        if (level === 0) {
+            Object.keys(data).forEach((key) => {
+                const nestedTotal = calculateNestedTotal(data[key]);
+                addKeySum(key, nestedTotal);
+            });
+        }
+    }, [data, level, addKeySum]);
+
     return (
         <div>
             {Object.keys(data).map((key) => (
-                <AccordionItem key={key} title={key} content={data[key]} level={level} addTotal={addTotal} />
+                <AccordionItem key={key} title={key} content={data[key]} level={level} addTotal={addTotal} addKeySum={addKeySum} />
             ))}
         </div>
     );
@@ -131,6 +154,7 @@ function NestedAccordion({ data, level, addTotal }) {
 // Main component to display summary data
 function SummaryTable({ data }) {
     const [totals, setTotals] = useState([]);
+    const [keySums, setKeySums] = useState({});
 
     const addTotal = (total) => {
         setTotals((prevTotals) => {
@@ -139,6 +163,13 @@ function SummaryTable({ data }) {
             }
             return prevTotals;
         });
+    };
+
+    const addKeySum = (key, sum) => {
+        setKeySums((prevKeySums) => ({
+            ...prevKeySums,
+            [key]: sum,
+        }));
     };
 
     let obj;
@@ -155,9 +186,15 @@ function SummaryTable({ data }) {
 
     return (
         <div>
-            <NestedAccordion data={obj} level={0} addTotal={addTotal} />
+            <NestedAccordion data={obj} level={0} addTotal={addTotal} addKeySum={addKeySum} />
             <table>
                 <tbody>
+                    {Object.keys(keySums).map((key) => (
+                        <tr key={key}>
+                            <td><strong>{key} Sum</strong></td>
+                            <td>{keySums[key]}</td>
+                        </tr>
+                    ))}
                     <tr>
                         <td><strong>Grand Total</strong></td>
                         <td>{grandTotal}</td>
