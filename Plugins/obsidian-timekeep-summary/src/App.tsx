@@ -48,6 +48,12 @@ export default function App({
 		<AppContext.Provider value={app}>
 			<SettingsContext.Provider value={settings}>
 				<TimekeepStoreContext.Provider value={timekeepStore}>
+
+                    <div>
+						<SummaryTable data={summary} />
+					</div>
+                    <br></br>
+
 					{saveError ? (
 						// Error page when saving fails
 						<TimesheetSaveError
@@ -59,9 +65,7 @@ export default function App({
 							{/*<TimesheetTable />*/}
 						</div>
 					)}
-					<div className="timekeep-container">
-						<SummaryTable data={summary} />
-					</div>
+					
 				</TimekeepStoreContext.Provider>
 			</SettingsContext.Provider>
 		</AppContext.Provider>
@@ -70,7 +74,7 @@ export default function App({
 
 // Accordion item component
 function AccordionItem({ title, content, level, addTotal, addKeySum }) {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
@@ -104,12 +108,12 @@ function AccordionItem({ title, content, level, addTotal, addKeySum }) {
                                 {Object.keys(content).map((key) => (
                                     <tr key={key}>
                                         <td>{key}</td>
-                                        <td>{content[key]}</td>
+                                        <td>{content[key]} h.</td>
                                     </tr>
                                 ))}
                                 <tr>
                                     <td><strong>Total</strong></td>
-                                    <td>{total}</td>
+                                    <td>{total} h.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -186,21 +190,29 @@ function SummaryTable({ data }) {
 
     return (
         <div>
-            <NestedAccordion data={obj} level={0} addTotal={addTotal} addKeySum={addKeySum} />
             <table>
+                <thead>
+                    <tr>
+                        <td>Summary</td>
+                        <td>Total Hours (1610 h.)</td>
+                    </tr>
+                </thead>
                 <tbody>
                     {Object.keys(keySums).map((key) => (
                         <tr key={key}>
                             <td><strong>{key} Sum</strong></td>
-                            <td>{keySums[key]}</td>
+                            <td>{keySums[key]} h.</td>
                         </tr>
                     ))}
                     <tr>
-                        <td><strong>Grand Total</strong></td>
-                        <td>{grandTotal}</td>
+                        <td><strong>Current status</strong></td>
+                        <td>{grandTotal} h.</td>
                     </tr>
                 </tbody>
             </table>
+            <hr></hr>
+            <h1>Detailed</h1>
+            <NestedAccordion data={obj} level={0} addTotal={addTotal} addKeySum={addKeySum} />
         </div>
     );
 }
