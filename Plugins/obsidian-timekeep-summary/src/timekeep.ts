@@ -1,5 +1,4 @@
 import { v4 as uuid } from "uuid";
-import type { Moment } from "moment";
 import { strHash } from "@/utils/text";
 import { isEmptyString } from "@/utils";
 import { SortOrder, UnstartedOrder, TimekeepSettings } from "@/settings";
@@ -11,6 +10,7 @@ import {
 	stripTimekeepRuntimeData,
 } from "@/schema";
 import { App, TFolder, TFile } from "obsidian";
+import { Moment } from "moment";
 
 export type LoadResult = LoadSuccess | LoadError;
 
@@ -736,35 +736,51 @@ export function getUniqueEntryHash(entry: TimeEntry): number {
 export async function loadSummary(source: string, app: App, folderPath: string): Promise<any> {
 	const folder = app.vault.getAbstractFileByPath(folderPath);
 	const codeBlocks:  Timekeep[] = [];
+	const arrMonths: String[] = [];
 	let codeBlocks_out: any[] =[]
 	if (folder instanceof TFolder) {
 		for (const child of folder.children)
 		{
 			if (child instanceof TFolder) {
-				codeBlocks_out = await processFolder(child, codeBlocks, app);
+				//console.log("codeblocks:"+codeBlocks)
+				codeBlocks_out = await processFolder(child, codeBlocks, arrMonths, app);
 			}
 		}
-	} 
+	}
+	//console.log(codeBlocks_out)
 	return codeBlocks_out;
   }
   
-  async function processFolder(folder: TFolder, codeBlocks: Timekeep[], app: App) {
+  async function processFolder(folder: TFolder, codeBlocks: Timekeep[], arrMonths: String[], app: App) {
+	let _fileMonth=''
 	for (const child of folder.children) {
 	  if (child instanceof TFile) {
+		//console.log(child.path)
+		const regex = /\/(\d{2})-([A-Za-z]{3})\//;
+		const match = child.path.match(regex);
+		if (match) {
+			_fileMonth = match[2];
+			//console.log(_fileMonth); // Output: Jan
+		} else {
+			console.log("No match found");
+		}
 		const content = await app.vault.read(child);
 		const extractedBlocks = extractTimekeepCodeblocks(content);
 		codeBlocks.push(...extractedBlocks);
+		arrMonths.push(_fileMonth)
 	  }
 	}
-	codeBlocks = combineEntries(codeBlocks)
+	codeBlocks = combineEntries(codeBlocks, arrMonths)
 	return codeBlocks;
   }
 
-  function combineEntries(blocks: Timekeep[]): any {
-    let _arr_entries_resume: Record<string, Record<string, Record<string, number>>> = {};
+  function combineEntries(blocks: Timekeep[], _fileMonth: String[]): any {
+    let _arr_entries_resume: Record<string, Record<string, Record<string,Record<string, number>>>> = {};
     let _weekNum = 'W0';
-
+	//console.log(_fileMonth)
+	let blockNum = 0;
     for (const block of blocks) {
+		//console.log(blockNum)
         for (const _e of block.entries) {
             for (const _s1 of _e.subEntries) {
                 let _duration = getEntryDuration(_s1, null);
@@ -776,6 +792,10 @@ export async function loadSummary(source: string, app: App, folderPath: string):
                     if (!_arr_entries_resume[_e.name][_s1.name]) {
                         _arr_entries_resume[_e.name][_s1.name] = {};
                     }
+					if (!_arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]]) {
+						//console.log(_arr_entries_resume)
+                        _arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]] = {};
+                    }
                     
                     for (const _s2 of _s1.subEntries) {
                         if (_s2.startTime != null) {
@@ -783,16 +803,18 @@ export async function loadSummary(source: string, app: App, folderPath: string):
                         }
                         break;  // Solo toma el primer subEntry con un startTime válido
                     }
+					
                     
-                    if (!_arr_entries_resume[_e.name][_s1.name][_weekNum]) {
-                        _arr_entries_resume[_e.name][_s1.name][_weekNum] = 0;
+                    if (!_arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]][_weekNum]) {
+                        _arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]][_weekNum] = 0;
                     }
-                    _arr_entries_resume[_e.name][_s1.name][_weekNum] += _duration/3600000;
+                    _arr_entries_resume[_e.name][_s1.name][_fileMonth[blockNum]][_weekNum] += _duration/3600000;
                 }
             }
         }
+		blockNum = blockNum+1
     }
-	//console.log(_arr_entries_resume);
+	//console.log(_arr_entries_resume)
     return JSON.stringify(_arr_entries_resume);
 }
 

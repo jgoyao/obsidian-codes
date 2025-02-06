@@ -84,6 +84,7 @@ export default class TimekeepPlugin extends Plugin {
 				  const folderPath = currentFile.substring(0, currentFile.lastIndexOf('/')); // Get the folder path from the current file path
 				  const loadResultSummary = await loadSummary('', this.app, folderPath); // Pass the folder path to the load function
 				  //editor.replaceSelection('\n```timekeep_s\n' + loadResult+'\n```\n');
+				  //console.log(loadResultSummary)
 				  if (loadResult.success == true)
 				  {
 				  	loadResult = { success: loadResult.success, timekeep: loadResult.timekeep, summary: loadResultSummary};

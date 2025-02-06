@@ -93,7 +93,7 @@ function AccordionItem({ title, content, level, addTotal }) {
             </div>
             {isOpen && (
                 <div style={{ paddingLeft: '20px' }}>
-                    {typeof content === 'object' && level < 1 ? (
+                    {typeof content === 'object' && level < 2 ? (
                         <NestedAccordion data={content} level={level + 1} addTotal={addTotal} />
                     ) : (
                         <table>
