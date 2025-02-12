@@ -204,10 +204,6 @@ function SummaryTable({ data }) {
                             <td>{keySums[key]} h.</td>
                         </tr>
                     ))}
-                    <tr>
-                        <td><strong>Current status</strong></td>
-                        <td>{grandTotal} h.</td>
-                    </tr>
                 </tbody>
             </table>
             <hr></hr>
