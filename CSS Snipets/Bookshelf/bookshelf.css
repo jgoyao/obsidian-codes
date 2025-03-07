@@ -66,6 +66,6 @@
     margin-top: 5px;
   }
   
-p[dir="auto"] {
-    display: none; /* Esto ocultará los elementos con dir="auto" */
+  .book-card-container p[dir="auto"] {
+    display: none; /* Esto ocultará solo los <p dir="auto"> dentro de .book-card-container */
 }
