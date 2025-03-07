@@ -66,3 +66,6 @@
     margin-top: 5px;
   }
   
+p[dir="auto"] {
+    display: none; /* Esto ocultará los elementos con dir="auto" */
+}
