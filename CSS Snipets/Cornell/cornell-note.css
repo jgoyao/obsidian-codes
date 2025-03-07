@@ -1,0 +1,92 @@
+/* Cornell Note Style for Obsidian */
+.cornell-note {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 12px;
+    border: 2px solid var(--background-modifier-border);
+    border-radius: 8px;
+    background-color: var(--background-primary);
+    margin-right: 10px;
+}
+
+/* CUE Section */
+.cornell-note .cue {
+    flex: 1 1 25%; /* Takes 25% width but allows wrapping */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 12px;
+    border-right: 2px solid var(--background-modifier-border);
+    background-color: var(--background-secondary-alt);
+    color: var(--text-accent);
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 6px 0 0 6px;
+}
+
+/* NOTE Section */
+.cornell-note .note {
+    flex: 3 1 70%; /* Takes 70% width but allows wrapping */
+    padding: 12px;
+    background-color: var(--background-secondary);
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* SUMMARY Section */
+.cornell-note .summary {
+    width: 100%; /* Always takes full width */
+    padding: 10px;
+    border-top: 2px solid var(--background-modifier-border);
+    background-color: var(--background-secondary-alt);
+    font-style: italic;
+    text-align: center;
+    border-radius: 0 0 6px 6px;
+}
+
+
+/**************************************/
+/* Cornell Note Style for Callouts in Obsidian */
+.callout[data-callout="note"] {
+    background-color: var(--background-secondary-alt);
+    color: var(--text-accent);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.callout[data-callout="abstract"] {
+    background-color: var(--background-secondary);
+    font-family: 'Arial', sans-serif;
+}
+
+.callout[data-callout="summary"] {
+    background-color: var(--background-secondary-alt);
+    font-style: italic;
+    text-align: center;
+}
+
+/**************************************/
+/* Cornell Note Style for Obsidian Markdown */
+.cornell-note h2:first-of-type {
+    color: var(--text-accent);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.cornell-note h2:nth-of-type(2) {
+    background-color: var(--background-secondary);
+    font-family: 'Arial', sans-serif;
+}
+
+.cornell-note h2:last-of-type {
+    background-color: var(--background-secondary-alt);
+    font-style: italic;
+    text-align: center;
+}
