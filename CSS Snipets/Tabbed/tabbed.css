@@ -1,0 +1,76 @@
+/*
+author: FireIsGood (Color Improved by ChatGPT)
+source: https://discord.com/channels/686053708261228577/702656734631821413/1092995965583114341
+*/
+
+[data-callout="tabbed"] {
+    outline: 1px solid var(--background-modifier-border);
+    border-radius: 0.5rem;
+    background: var(--background-secondary);
+}
+
+[data-callout="tabbed"] > .callout-content {
+    padding: 0.25rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(5rem, max-content));
+    gap: 0 1rem;
+}
+
+[data-callout="tabbed"] > .callout-title {
+    display: none;
+}
+
+[data-callout="tabbed"] > .callout-content p {
+    margin: 0;
+}
+
+[data-callout="tabbed"] > .callout-content label > input {
+    display: none;
+}
+
+[data-callout="tabbed"] > .callout-content label {
+    width: 100%;
+    display: inline-block;
+    padding: 0.15rem 0.75ch;
+    border-radius: 1rem;
+
+    color: var(--text-normal);
+    background-color: var(--background-modifier-hover);
+
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+[data-callout="tabbed"] > .callout-content label:has(input:checked) {
+    color: var(--text-on-accent);
+    background-color: var(--interactive-accent);
+}
+
+[data-callout="tabbed"] > .callout-content label:hover {
+    background-color: var(--background-modifier-active-hover);
+}
+
+[data-callout="tabbed"] > .callout-content p:not(:has(label input:checked)) + blockquote {
+    display: none;
+}
+
+[data-callout="tabbed"] > .callout-content > blockquote {
+    order: 999;
+    grid-column: 1 / -1;
+
+    background-color: transparent;
+    padding-left: 0;
+    border: 0;
+    color: var(--text-normal);
+}
+
+[data-callout="tabbed"] > .callout-content label:first-of-type input {
+    display: none;
+}
+
+[data-callout="tabbed"] > .callout-content label:first-of-type input::after {
+    content: "checked";
+}

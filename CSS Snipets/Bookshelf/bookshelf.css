@@ -1,0 +1,68 @@
+/* Global Styles for Cards */
+.book-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    padding: 10px;
+  }
+  
+  /* Card Styles */
+  .book-card {
+    background: var(--background-primary); /* Use Obsidian's background color */
+    border: 1px solid var(--background-modifier-border); /* Light border */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .book-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Cover Image */
+  .book-cover {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .book-cover img {
+    max-width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+  }
+  
+  /* Book Details */
+  .book-details {
+    padding: 10px;
+  }
+  
+  .book-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--text-normal); /* Default text color */
+    text-decoration: none;
+  }
+  
+  .book-title:hover {
+    text-decoration: underline;
+  }
+  
+  .book-author, .book-pages {
+    font-size: 0.9em;
+    color: var(--text-muted); /* Lighter text for author and pages */
+  }
+  
+  .book-author {
+    margin-top: 5px;
+  }
+  
+  .book-pages {
+    margin-top: 5px;
+  }
+  
