@@ -54,14 +54,14 @@
 
 /**************************************/
 /* Cornell Note Style for Callouts in Obsidian */
-.callout[data-callout="note"] {
+.callout[data-callout="tip"] {
     background-color: var(--background-secondary-alt);
     color: var(--text-accent);
     font-family: 'Courier New', monospace;
     font-weight: bold;
 }
 
-.callout[data-callout="abstract"] {
+.callout[data-callout="note"] {
     background-color: var(--background-secondary);
     font-family: 'Arial', sans-serif;
 }

@@ -17,12 +17,12 @@ cssclass:
 ---
 # Cornell Callouts
 
-> [!note] Key Points 
+> [!tip] Key Points 
 > - Question 1?
 > - Important concept
 > - Key term --- > 
 
->[!abstract] Notes
+>[!note] Notes
 > - Detailed notes explaining concepts.
 > - Additional explanations and examples.
 > - Important details. ---
